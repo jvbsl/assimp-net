@@ -21,6 +21,7 @@
 */
 
 using System;
+using System.Runtime.CompilerServices;
 
 namespace Assimp
 {
@@ -31,37 +32,49 @@ namespace Assimp
     {
         public static unsafe void WriteArray<T>(IntPtr pDest, T[] data, int startIndex, int count) where T : struct
         {
-            throw new NotImplementedException();
+            byte* ptr = (byte*)pDest.ToPointer();
+            int elementSize = Unsafe.SizeOf<T>();
+            for (int i = 0; i < count; i++)
+            {
+                Unsafe.Write(ptr, data[i]);
+                ptr += elementSize;
+            }
         }
 
         public static unsafe void ReadArray<T>(IntPtr pSrc, T[] data, int startIndex, int count) where T : struct
         {
-            throw new NotImplementedException();
+            byte* ptr = (byte*)pSrc.ToPointer();
+            int elementSize = Unsafe.SizeOf<T>();
+            for (int i = 0; i < count; i++)
+            {
+                data[i] = Unsafe.Read<T>(ptr);
+                ptr += elementSize;
+            }
         }
 
         public static unsafe void WriteInline<T>(void* pDest, ref T srcData) where T : struct
         {
-            throw new NotImplementedException();
+            Unsafe.Write(pDest, srcData);
         }
 
         public static unsafe T ReadInline<T>(void* pSrc) where T : struct
         {
-            throw new NotImplementedException();
+            return Unsafe.Read<T>(pSrc);
         }
 
         public static unsafe int SizeOfInline<T>()
         {
-            throw new NotImplementedException();
+            return Unsafe.SizeOf<T>();
         }
 
         public static unsafe void MemCopyInline(void* pDest, void* pSrc, int count)
         {
-            throw new NotImplementedException();
+            Unsafe.CopyBlock(pDest, pSrc, (uint)count);
         }
 
         public static unsafe void MemSetInline(void* pDest, byte value, int count)
         {
-            throw new NotImplementedException();
+            Unsafe.InitBlock(pDest, value, (uint)count);
         }
     }
 }

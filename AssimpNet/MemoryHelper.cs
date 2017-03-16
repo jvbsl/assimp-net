@@ -25,6 +25,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Linq;
 
 namespace Assimp
 {
@@ -780,7 +781,7 @@ namespace Assimp
             {
                 if(!s_customMarshalers.TryGetValue(type, out marshaler))
                 {
-                    Object[] customAttributes = type.GetCustomAttributes(typeof(NativeCustomMarshalerAttribute), false);
+                    var customAttributes = type.GetTypeInfo().GetCustomAttributes(typeof(NativeCustomMarshalerAttribute), false).ToArray();
                     if(customAttributes.Length != 0)
                         marshaler = (customAttributes[0] as NativeCustomMarshalerAttribute).Marshaler;
 

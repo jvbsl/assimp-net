@@ -163,7 +163,7 @@ namespace Assimp
             }
             finally
             {
-                reader.Close(); //Make sure we close and not Dispose, to prevent underlying stream from being disposed.
+                reader.Dispose(); //Make sure we close and not Dispose, to prevent underlying stream from being disposed.
             }
         }
 
@@ -207,11 +207,6 @@ namespace Assimp
 
             public BlobBinaryReader(Stream stream)
                 : base(stream) { }
-
-            public override void Close()
-            {
-                base.Dispose(false);
-            }
         }
     }
 }

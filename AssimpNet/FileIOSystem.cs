@@ -246,7 +246,7 @@ namespace Assimp
             if(!IsDisposed && disposing)
             {
                 if(m_fileStream != null)
-                    m_fileStream.Close();
+                    m_fileStream.Dispose();
 
                 m_fileStream = null;
 

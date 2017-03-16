@@ -24,7 +24,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using System.Runtime.ConstrainedExecution;
 using System.Runtime.InteropServices;
 
 namespace Assimp.Unmanaged
@@ -1482,8 +1481,7 @@ namespace Assimp.Unmanaged
 
         private static bool IsLinux()
         {
-            int platform = (int) Environment.OSVersion.Platform;
-            return (platform == 4) || (platform == 6) || (platform == 128);
+            return RuntimeInformation.IsOSPlatform(OSPlatform.Linux);
         }
     }
 
@@ -1602,7 +1600,7 @@ namespace Assimp.Unmanaged
 
         private void PreloadFunctions()
         {
-            Type[] funcDelegateTypes = typeof(AssimpDelegates).GetNestedTypes();
+            Type[] funcDelegateTypes = typeof(AssimpDelegates).GetNestedTypes(BindingFlags.Public | BindingFlags.NonPublic);
 
             foreach(Type funcType in funcDelegateTypes)
             {
@@ -1625,7 +1623,7 @@ namespace Assimp.Unmanaged
 
         private AssimpFunctionNameAttribute GetAssimpAttribute(Type type)
         {
-            object[] attributes = type.GetCustomAttributes(typeof(AssimpFunctionNameAttribute), false);
+            var attributes = type.GetTypeInfo().GetCustomAttributes(typeof(AssimpFunctionNameAttribute), false);
             foreach(object attr in attributes)
             {
                 if(attr is AssimpFunctionNameAttribute)
@@ -1660,10 +1658,9 @@ namespace Assimp.Unmanaged
             }
         }
 
-        [DllImport("kernel32.dll", CharSet = CharSet.Auto, BestFitMapping = false, SetLastError = true)]
+        [DllImport("kernel32.dll", BestFitMapping = false, SetLastError = true)]
         private static extern IntPtr LoadLibrary(String fileName);
 
-        [ReliabilityContract(Consistency.WillNotCorruptState, Cer.Success)]
         [DllImport("kernel32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
         private static extern bool FreeLibrary(IntPtr hModule);

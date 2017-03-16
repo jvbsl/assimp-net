@@ -351,7 +351,7 @@ namespace Assimp.Unmanaged
         {
             fixed(sbyte* charPtr = FormatHint)
             {
-                return new String(charPtr);
+                return new String((char*)charPtr);
             }
         }
     }

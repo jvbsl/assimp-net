@@ -1581,7 +1581,9 @@ namespace Assimp.Unmanaged
 
             if(!m_nameToUnmanagedFunction.TryGetValue(functionName, out function))
             {
+#pragma warning disable CS0618 // Type or member is obsolete
                 function = Marshal.GetDelegateForFunctionPointer(procAddr, type);
+#pragma warning restore CS0618 // Type or member is obsolete
                 m_nameToUnmanagedFunction.Add(functionName, function);
             }
 

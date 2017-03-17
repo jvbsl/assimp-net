@@ -34,7 +34,7 @@ namespace Assimp
         {
             byte* ptr = (byte*)pDest.ToPointer();
             int elementSize = Unsafe.SizeOf<T>();
-            for (int i = 0; i < count; i++)
+            for (int i = startIndex; i < count; i++)
             {
                 Unsafe.Write(ptr, data[i]);
                 ptr += elementSize;
@@ -45,7 +45,7 @@ namespace Assimp
         {
             byte* ptr = (byte*)pSrc.ToPointer();
             int elementSize = Unsafe.SizeOf<T>();
-            for (int i = 0; i < count; i++)
+            for (int i = startIndex; i < count; i++)
             {
                 data[i] = Unsafe.Read<T>(ptr);
                 ptr += elementSize;

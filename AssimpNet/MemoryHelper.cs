@@ -379,8 +379,9 @@ namespace Assimp
                 value = (T)marshaler.MarshalNativeToManaged(ptr);
                 return;
             }
-
+#pragma warning disable CS0618 // Type or member is obsolete
             value = (T) Marshal.PtrToStructure(ptr, type);
+#pragma warning restore CS0618 // Type or member is obsolete
         }
 
         /// <summary>
@@ -401,7 +402,7 @@ namespace Assimp
             if (HasNativeCustomMarshaler(type, out marshaler))
                 return (T) marshaler.MarshalNativeToManaged(ptr);
 
-            return (T) Marshal.PtrToStructure(ptr, type);
+            return Marshal.PtrToStructure<T>(ptr);
         }
 
         /// <summary>
@@ -423,7 +424,7 @@ namespace Assimp
                 return;
             }
 
-            Marshal.StructureToPtr((Object)value, ptr, true);
+            Marshal.StructureToPtr(value, ptr, true);
         }
 
         /// <summary>
@@ -445,7 +446,7 @@ namespace Assimp
                 return;
             }
 
-            Marshal.StructureToPtr((Object)value, ptr, true);
+            Marshal.StructureToPtr(value, ptr, true);
         }
 
         /// <summary>
@@ -462,7 +463,7 @@ namespace Assimp
             if (HasNativeCustomMarshaler(type, out marshaler))
                 return marshaler.NativeDataSize;
 
-            return Marshal.SizeOf(type);
+            return Marshal.SizeOf<T>();
         }
 
         /// <summary>

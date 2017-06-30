@@ -1464,6 +1464,9 @@ namespace Assimp.Unmanaged
         public const String DefaultWindows32BitPath = "Assimp32.dll";
         public const String DefaultWindows64BitPath = "Assimp64.dll";
 
+        public const String DefaultUWP32BitPath = "assimp-vc140-mt.dll";
+        public const String DefaultUWP64BitPath = "assimp-vc140-mt.dll";
+
         public const String DefaultLinux32BitPath = "Assimp32.so";
         public const String DefaultLinux64BitPath = "libassimp.so";
 
@@ -1472,6 +1475,10 @@ namespace Assimp.Unmanaged
             if(IsLinux())
             {
                 return new AssimpLibraryLinuxImplementation();
+            }
+            else if(IsUWP())
+            {
+                return new AssimpLibraryUWPImplementation();
             }
             else
             {
@@ -1482,6 +1489,11 @@ namespace Assimp.Unmanaged
         private static bool IsLinux()
         {
             return RuntimeInformation.IsOSPlatform(OSPlatform.Linux);
+        }
+
+        private static bool IsUWP()
+        {
+            return (Type.GetType("System.Runtime.InteropServices.WindowsRuntime.WindowsRuntimeMarshal", false) != null);
         }
     }
 
@@ -1768,5 +1780,65 @@ namespace Assimp.Unmanaged
 
     #endregion
 
+    internal sealed class AssimpLibraryUWPImplementation : AssimpLibraryImplementation
+    {
+
+        public override string DefaultLibraryPath32Bit
+        {
+            get
+            {
+                return AssimpDefaultLibraryPath.DefaultUWP32BitPath;
+            }
+        }
+
+        public override string DefaultLibraryPath64Bit
+        {
+            get
+            {
+                return AssimpDefaultLibraryPath.DefaultUWP64BitPath;
+            }
+        }
+
+        [DllImport("kernel32.dll", BestFitMapping = false, SetLastError = true, CharSet = CharSet.Unicode)]
+        private static extern IntPtr LoadPackagedLibrary(String fileName);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        private static extern bool FreeLibrary(IntPtr hModule);
+
+        [DllImport("kernel32.dll")]
+        private static extern IntPtr GetProcAddress(IntPtr hModule, String procName);
+
+        protected override IntPtr NativeLoadLibrary(string path)
+        {
+            IntPtr libraryHandle = LoadPackagedLibrary(path);
+
+            if (libraryHandle == IntPtr.Zero)
+            {
+                int hr = Marshal.GetHRForLastWin32Error();
+                Exception innerException = Marshal.GetExceptionForHR(hr);
+                if (innerException != null)
+                    throw new AssimpException("Error loading unmanaged library from path: " + path + ", see inner exception for details.\n" + innerException.Message, innerException);
+                else
+                    throw new AssimpException("Error loading unmanaged library from path: " + path);
+            }
+
+            return libraryHandle;
+        }
+
+        protected override void NativeFreeLibrary(IntPtr handle)
+        {
+            FreeLibrary(handle);
+        }
+
+        protected override IntPtr NativeGetProcAddress(IntPtr handle, String functionName)
+        {
+            return GetProcAddress(handle, functionName);
+        }
+    }
+
     #endregion
+
+
+   
 }

@@ -1493,7 +1493,24 @@ namespace Assimp.Unmanaged
 
         private static bool IsUWP()
         {
-            return (Type.GetType("System.Runtime.InteropServices.WindowsRuntime.WindowsRuntimeMarshal", false) != null);
+            bool isUWP = false;
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                try
+                {
+                    var windir = Environment.GetEnvironmentVariable("windir");
+                    if (string.IsNullOrEmpty(windir))
+                    {
+                        isUWP = true;
+                    }
+                }
+                catch
+                {
+                    // do nothing, it is not UWP
+                }
+            }
+
+            return isUWP;
         }
     }
 
@@ -1800,7 +1817,7 @@ namespace Assimp.Unmanaged
         }
 
         [DllImport("kernel32.dll", BestFitMapping = false, SetLastError = true, CharSet = CharSet.Unicode)]
-        private static extern IntPtr LoadPackagedLibrary(String fileName);
+        private static extern IntPtr LoadPackagedLibrary(String fileName, uint uReserved);
 
         [DllImport("kernel32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
@@ -1811,7 +1828,7 @@ namespace Assimp.Unmanaged
 
         protected override IntPtr NativeLoadLibrary(string path)
         {
-            IntPtr libraryHandle = LoadPackagedLibrary(path);
+            IntPtr libraryHandle = LoadPackagedLibrary(path, 0);
 
             if (libraryHandle == IntPtr.Zero)
             {

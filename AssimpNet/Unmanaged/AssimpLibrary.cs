@@ -1,4 +1,4 @@
- /*
+/*
 * Copyright (c) 2012-2014 AssimpNet - Nicholas Woodfield
 * 
 * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using NativeLibraryLoader;
 
 namespace Assimp.Unmanaged
 {
@@ -1472,6 +1473,9 @@ namespace Assimp.Unmanaged
 
         public static AssimpLibraryImplementation CreateRuntimeImplementation()
         {
+#if NETSTANDARD2_0
+            return new AssimpLibraryNetstandardImplementation();
+#else
             if(IsLinux())
             {
                 return new AssimpLibraryLinuxImplementation();
@@ -1484,6 +1488,7 @@ namespace Assimp.Unmanaged
             {
                 return new AssimpLibraryWindowsImplementation();
             }
+#endif
         }
 
         private static bool IsLinux()
@@ -1665,7 +1670,7 @@ namespace Assimp.Unmanaged
         }
     }
 
-    #region Windows Implementation
+#region Windows Implementation
 
     /// <summary>
     /// Windows implementation for loading the unmanaged assimp library.
@@ -1727,9 +1732,9 @@ namespace Assimp.Unmanaged
         }
     }
 
-    #endregion
+#endregion
 
-    #region Linux Implementation
+#region Linux Implementation
 
     /// <summary>
     /// Linux implementation for loading the unmanaged assimp library.
@@ -1854,8 +1859,67 @@ namespace Assimp.Unmanaged
         }
     }
 
+    #region netstandard Implementation
+    internal sealed class AssimpLibraryNetstandardImplementation : AssimpLibraryImplementation
+    {
+        private LibraryLoader _loader;
+
+        public override string DefaultLibraryPath32Bit
+        {
+            get
+            {
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+                {
+                    return "libassimp.so";
+                }
+                else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+                {
+                    return "libassimp.dylib";
+                }
+                else
+                {
+                    return "Assimp32.dll";
+                }
+            }
+        }
+
+        public override string DefaultLibraryPath64Bit
+        {
+            get
+            {
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+                {
+                    return "libassimp.so";
+                }
+                else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+                {
+                    return "libassimp.dylib";
+                }
+                else
+                {
+                    return "Assimp64.dll";
+                }
+            }
+        }
+
+        protected override void NativeFreeLibrary(IntPtr handle)
+        {
+            _loader.FreeNativeLibrary(handle);
+        }
+
+        protected override IntPtr NativeGetProcAddress(IntPtr handle, string functionName)
+        {
+            return _loader.LoadFunctionPointer(handle, functionName);
+        }
+
+        protected override IntPtr NativeLoadLibrary(string path)
+        {
+            _loader = LibraryLoader.GetPlatformDefaultLoader();
+            return _loader.LoadNativeLibrary(path);
+        }
+    }
+
     #endregion
 
-
-   
+    #endregion
 }

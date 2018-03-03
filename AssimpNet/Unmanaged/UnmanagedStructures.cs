@@ -347,11 +347,11 @@ namespace Assimp.Unmanaged
         /// Gets the format hint.
         /// </summary>
         /// <returns>The format hint</returns>
-        public String GetFormatHint()
+        public string GetFormatHint()
         {
             fixed(sbyte* charPtr = FormatHint)
             {
-                return new String(charPtr);
+                return new string((char*)charPtr);
             }
         }
     }

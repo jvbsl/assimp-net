@@ -1,0 +1,15 @@
+build_script:
+  ci-build.cmd
+
+artifacts:
+  - path: bin\Packages\Release\*.nupkg
+    name: Assimp Nugets
+
+deploy:
+  provider: NuGet
+  server: https://www.myget.org/F/amerkoleci/api/v2/package
+  api_key:
+    secure: rVfu/HYGH96xeQfy+gRBC/ovHCheQKTjwIeNIE9HlpkN6e4/YtPUqn5f036pSlmi
+  skip_symbols: false
+  symbol_server: https://www.myget.org/F/amerkoleci/api/v2/package
+  artifact: Assimp Nugets

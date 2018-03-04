@@ -50,14 +50,19 @@ namespace Assimp
         Float = 3,
 
         /// <summary>
+        /// Metadata is a double.
+        /// </summary>
+        Double = 4,
+
+        /// <summary>
         /// Metadata is a string.
         /// </summary>
-        String = 4,
+        String = 5,
 
         /// <summary>
         /// Metadata is a <see cref="Vector3D"/>.
         /// </summary>
-        Vector3D = 5
+        Vector3D = 6,
     }
 
     /// <summary>
@@ -461,7 +466,7 @@ namespace Assimp
     /// RemoveComponent.
     /// </summary>
     [Flags]
-    public enum ExcludeComponent
+    public enum ExcludeComponent : uint
     {
         /// <summary>
         /// No components to be excluded.
@@ -565,7 +570,7 @@ namespace Assimp
     /// time range. This corresponds to the prestate and poststates
     /// of the animation node.
     /// </summary>
-    public enum AnimationBehaviour
+    public enum AnimationBehaviour : int
     {
         /// <summary>
         /// The value from the default node transformation is taken.
@@ -593,7 +598,7 @@ namespace Assimp
     /// <summary>
     /// Enumerates all supported light sources.
     /// </summary>
-    public enum LightSourceType
+    public enum LightSourceType : int
     {
         /// <summary>
         /// Unknown light.
@@ -617,7 +622,23 @@ namespace Assimp
         /// in a certain direction that is limited by an angle, like
         /// a cone.
         /// </summary>
-        Spot = 0x3
+        Spot = 0x3,
+
+        /// <summary>
+        /// The generic light level of the world, including the bounces
+        /// of all other light sources.
+        /// Typically, there's at most one ambient light in a scene.
+        /// This light type doesn't have a valid position, direction, or
+        /// other properties, just a color.
+        /// </summary>
+        Ambient = 0x4,
+
+        /// <summary>
+        /// An area light is a rectangle with predefined size that uniformly
+        /// emits light from one of its sides. The position is center of the
+        /// rectangle and direction is its normal vector.
+        /// </summary>
+        Area = 0x5,
     }
 
     /// <summary>
@@ -631,7 +652,7 @@ namespace Assimp
     /// and sourceColor is the material color before the
     /// transparency calculation. This corresponds to the AI_MATKEY_BLEND_FUNC property.</para>
     /// </summary>
-    public enum BlendMode
+    public enum BlendMode : int
     {
         /// <summary>
         /// Default blending: sourceColor * sourceAlpha + destColor * (1 - sourceAlpha)
@@ -651,7 +672,7 @@ namespace Assimp
     /// documentation for more information.
     /// </para>
     /// </summary>
-    public enum ShadingMode
+    public enum ShadingMode : int
     {
         /// <summary>
         /// No shading mode defined.
@@ -717,7 +738,7 @@ namespace Assimp
     /// to the AI_MAT_KEY_TEXFLAGS property.
     /// </summary>
     [Flags]
-    public enum TextureFlags
+    public enum TextureFlags : int
     {
         /// <summary>
         /// The texture's color values have to be inverted (componentwise 1-n).
@@ -744,7 +765,7 @@ namespace Assimp
     /// Defines how UV coordinates outside the [0..1] range are handled. Commonly
     /// referred to as the 'wrapping mode'
     /// </summary>
-    public enum TextureWrapMode
+    public enum TextureWrapMode : int
     {
         /// <summary>
         /// A texture coordinate u|v is translated to u % 1| v % 1.
@@ -778,7 +799,7 @@ namespace Assimp
     /// description of how the mapping should look like is given.
     /// </para>
     /// </summary>
-    public enum TextureMapping
+    public enum TextureMapping : int
     {
         /// <summary>
         /// Coordinates are taken from the an existing UV channel.
@@ -836,7 +857,7 @@ namespace Assimp
     /// </code>
     /// </para>
     /// </summary>
-    public enum TextureOperation
+    public enum TextureOperation : int
     {
         /// <summary>
         /// T = T1 * T2
@@ -998,13 +1019,21 @@ namespace Assimp
         /// TER (Terragen) and HMP (3D Game Studio) are height map formats.
         /// </para>
         /// </summary>
-        Terrain = 0x10
+        Terrain = 0x10,
+
+        /// <summary>
+        /// Specifies that the scene data can be shared between structures. For example:
+        /// one vertex in few faces. \ref AI_SCENE_FLAGS_NON_VERBOSE_FORMAT can not be
+        /// used for this because \ref AI_SCENE_FLAGS_NON_VERBOSE_FORMAT has internal
+        /// meaning about postprocessing steps.
+        /// </summary>
+        AllowShared = 0x20,
     }
 
     /// <summary>
     /// Enumerates Assimp function result codes.
     /// </summary>
-    public enum ReturnCode
+    public enum ReturnCode : int
     {
         /// <summary>
         /// Function returned successfully.
@@ -1025,7 +1054,7 @@ namespace Assimp
     /// <summary>
     /// Seek origins for Assimp's virtual file system API.
     /// </summary>
-    public enum Origin
+    public enum Origin : int
     {
         /// <summary>
         /// Beginning of the file
@@ -1047,7 +1076,7 @@ namespace Assimp
     /// Enumerates predefined log streaming destinations.
     /// </summary>
     [Flags]
-    public enum DefaultLogStream
+    public enum DefaultLogStream : int
     {
         /// <summary>
         /// Stream log to a file
@@ -1074,12 +1103,17 @@ namespace Assimp
     /// <summary>
     /// Defines material property types.
     /// </summary>
-    public enum PropertyType
+    public enum PropertyType : int
     {
         /// <summary>
         /// Array of single-precision (32 bit) floats.
         /// </summary>
         Float = 0x1,
+
+        /// <summary>
+        /// Array of double-precision (64 bit) floats.
+        /// </summary>
+        Double = 0x2,
 
         /// <summary>
         /// Property is a string.

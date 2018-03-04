@@ -1,4 +1,4 @@
-﻿/*
+/*
 * Copyright (c) 2012-2014 AssimpNet - Nicholas Woodfield
 *
 * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -291,6 +291,11 @@ namespace Assimp.Unmanaged
         /// aiAnimMesh**, array of attachment meshes for vertex-based animation. NOT CURRENTLY IN USE.
         /// </summary>
         public IntPtr AnimMeshes;
+
+        /// <summary>
+        /// Method of morphing when animeshes are specified.
+        /// </summary>
+        public int Method;
     }
 
     /// <summary>
@@ -314,10 +319,10 @@ namespace Assimp.Unmanaged
         public uint Height;
 
         /// <summary>
-        /// sbyte[4], format extension hint. Fixed size char is two bytes regardless of encoding. Unmanaged assimp uses a char that
+        /// sbyte[9], format extension hint. Fixed size char is two bytes regardless of encoding. Unmanaged assimp uses a char that
         /// maps to one byte.
         /// </summary>
-        public fixed sbyte FormatHint[4];
+        public fixed sbyte FormatHint[9];
 
         /// <summary>
         /// aiTexel*, array of texel data.
@@ -332,14 +337,14 @@ namespace Assimp.Unmanaged
         {
             char[] hintChars = (String.IsNullOrEmpty(formatHint)) ? s_nullFormat : formatHint.ToLowerInvariant().ToCharArray();
 
-            int count = hintChars.Length;
+            int count = Math.Min(hintChars.Length, 8);
 
             fixed(sbyte* charPtr = FormatHint)
             {
-                charPtr[0] = (sbyte) ((count > 0) ? hintChars[0] : '\0');
-                charPtr[1] = (sbyte) ((count > 1) ? hintChars[1] : '\0');
-                charPtr[2] = (sbyte) ((count > 2) ? hintChars[2] : '\0');
-                charPtr[3] = (sbyte) '\0';
+                for (int i=0; i < count; i++)
+                    charPtr[i] = (sbyte) hintChars[i];
+                for (int i = count; i < 9; i++)
+                    charPtr[i] = 0;
             }
         }
 
@@ -588,6 +593,17 @@ namespace Assimp.Unmanaged
         /// aiMeshAnim**, mesh animation channels. Each channel affects a single mesh.
         /// </summary>
         public IntPtr MeshChannels;
+
+        /// <summary>
+        /// The number of mesh animation channels. Each channel affects
+        /// a single mesh and defines morphing animation.
+        /// </summary>
+        public uint NumMorphMeshChannels;
+
+        /// <summary>
+        /// aiMeshMorphAnim**, morph mesh animation channels. Each channel affects a single mesh.
+        /// </summary>
+        public IntPtr MorphMeshChannels;
     }
 
     /// <summary>
@@ -616,6 +632,11 @@ namespace Assimp.Unmanaged
         /// Direction of the spot/directional light.
         /// </summary>
         public Vector3D Direction;
+
+        /// <summary>
+        /// Up direction of the spot/directional light.
+        /// </summary>
+        public Vector3D Up;
 
         /// <summary>
         /// Attenuation constant value.
@@ -656,6 +677,11 @@ namespace Assimp.Unmanaged
         /// Spot light outer angle.
         /// </summary>
         public float AngleOuterCone;
+
+        /// <summary>
+        /// Area light size.
+        /// </summary>
+        public Vector2D Size;
     }
 
     /// <summary>
@@ -915,6 +941,11 @@ namespace Assimp.Unmanaged
         /// unsigned int, number of vertices.
         /// </summary>
         public uint NumVertices;
+
+        /// <summary>
+        /// Weight of the AnimMesh.
+        /// </summary>
+        public float Weight;
     }
 
     /// <summary>

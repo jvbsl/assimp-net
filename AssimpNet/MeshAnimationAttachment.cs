@@ -41,6 +41,7 @@ namespace Assimp
         private List<Vector3D> m_bitangents;
         private List<Color4D>[] m_colors;
         private List<Vector3D>[] m_texCoords;
+        private float m_weight;
 
         /// <summary>
         /// Gets the number of vertices in this mesh. This is a replacement
@@ -53,6 +54,15 @@ namespace Assimp
             get
             {
                 return m_vertices.Count;
+            }
+        }
+
+
+        public float Weight
+        {
+            get
+            {
+                return m_weight;
             }
         }
 
@@ -323,6 +333,7 @@ namespace Assimp
             nativeValue.Colors = new AiMeshColorArray();
             nativeValue.TextureCoords = new AiMeshTextureCoordinateArray();
             nativeValue.NumVertices = (uint) VertexCount;
+            nativeValue.Weight = Weight;
 
             if(VertexCount > 0)
             {
@@ -416,6 +427,8 @@ namespace Assimp
                         m_texCoords[i].AddRange(MemoryHelper.FromNativeArray<Vector3D>(texCoordsPtr, vertexCount));
                 }
             }
+
+            m_weight = nativeValue.Weight;
         }
 
         /// <summary>

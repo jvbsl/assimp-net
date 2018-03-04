@@ -1,9 +1,14 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Description>A .NET Wrapper for the Open Asset Import (Assimp) library.</Description>
+    <Copyright>Amer Koleci</Copyright>
+    <AssemblyTitle>AssimpNet-netstandard</AssemblyTitle>
+    <NeutralLanguage>en-US</NeutralLanguage>
     <PackageId>AssimpNet-netstandard</PackageId>
+    <PackageTags>assimpl;netstandard</PackageTags>
     <PackageVersion>3.3.1</PackageVersion>
   </PropertyGroup>
 
@@ -12,7 +17,7 @@
     <PackageReference Include="NativeLibraryLoader" Version="1.0.2" />
   </ItemGroup>
 
-  <ItemGroup>
+<ItemGroup>
     <Content Include="..\libs\Assimp\Assimp64.dll">
       <PackagePath>runtimes/win-x64/native</PackagePath>
       <Pack>true</Pack>

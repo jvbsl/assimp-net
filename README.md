@@ -1,5 +1,6 @@
 # AssimpNet
 
+[![Build status](https://ci.appveyor.com/api/projects/status/4p0q2qmpko3m7vmy?svg=true)](https://ci.appveyor.com/project/amerkoleci/assimp-net)
 [![Contribute!](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/amerkoleci/assimp-net/issues)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/amerkoleci/assimp-net/blob/master/LICENSE)
 

@@ -7,3 +7,6 @@
 **AssimpNet** is a net standard 2.0 C# wrapper for [assimp](https://github.com/assimp/assimp) library, [license](https://github.com/assimp/assimp/blob/master/LICENSE).
 
 **Note** The initial fork is based on [assimp-net](https://github.com/assimp/assimp-net)
+
+## Download
+Pre-release package versions are available from MyGet: https://www.myget.org/feed/amerkoleci/package/nuget/AssimpNet-netstandard

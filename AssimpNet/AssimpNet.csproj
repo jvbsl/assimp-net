@@ -4,13 +4,10 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <Description>A .NET Wrapper for the Open Asset Import (Assimp) library.</Description>
     <Copyright>Amer Koleci</Copyright>
-    <AssemblyTitle>AssimpNet</AssemblyTitle>
+    <AssemblyTitle>AssimpNet-netstandard</AssemblyTitle>
     <NeutralLanguage>en-US</NeutralLanguage>
     <PackageId>AssimpNet-netstandard</PackageId>
-    <AssemblyVersion>4.1.0</AssemblyVersion>
-    <PackageVersion>$(AssemblyVersion)</PackageVersion>
     <PackageTags>assimpl;netstandard</PackageTags>
-    <Authors>Amer Koleci;Nicholas Woodfield</Authors>
   </PropertyGroup>
 
    <ItemGroup>

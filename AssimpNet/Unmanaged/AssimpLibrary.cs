@@ -316,7 +316,12 @@ namespace Assimp.Unmanaged
 		{
 			LoadIfNotLoaded();
 
-			int count = (int)m_impl.GetFunction<AssimpDelegates.aiGetExportFormatCount>(AssimpFunctionNames.aiGetExportFormatCount)().ToUInt32();
+			var aiGetExportFormatCount = m_impl.GetFunction<AssimpDelegates.aiGetExportFormatCount>(AssimpFunctionNames.aiGetExportFormatCount);
+
+			if (aiGetExportFormatCount == null)
+				throw new AssimpException($"Error: Library function '{AssimpFunctionNames.aiGetExportFormatCount}' not supported(ASSIMP_BUILD_NO_EXPORT set)");
+
+			int count = (int)aiGetExportFormatCount().ToUInt32();
 
 			if (count == 0)
 				return new ExportFormatDescription[0];
@@ -356,6 +361,11 @@ namespace Assimp.Unmanaged
 			AssimpDelegates.aiExportSceneToBlob exportBlobFunc = m_impl.GetFunction<AssimpDelegates.aiExportSceneToBlob>(AssimpFunctionNames.aiExportSceneToBlob);
 			AssimpDelegates.aiReleaseExportBlob releaseExportBlobFunc = m_impl.GetFunction<AssimpDelegates.aiReleaseExportBlob>(AssimpFunctionNames.aiReleaseExportBlob);
 
+
+			if (exportBlobFunc == null)
+				throw new AssimpException($"Error: Library function '{AssimpFunctionNames.aiExportSceneToBlob}' not supported(ASSIMP_BUILD_NO_EXPORT set)");
+			if (releaseExportBlobFunc == null)
+				throw new AssimpException($"Error: Library function '{AssimpFunctionNames.aiReleaseExportBlob}' not supported(ASSIMP_BUILD_NO_EXPORT set)");
 			IntPtr blobPtr = exportBlobFunc(scene, formatId, (uint)preProcessing);
 
 			if (blobPtr == IntPtr.Zero)
@@ -403,6 +413,9 @@ namespace Assimp.Unmanaged
 				return ReturnCode.Failure;
 
 			AssimpDelegates.aiExportSceneEx exportFunc = m_impl.GetFunction<AssimpDelegates.aiExportSceneEx>(AssimpFunctionNames.aiExportSceneEx);
+
+			if (exportFunc == null)
+				throw new AssimpException($"Error: Library function '{AssimpFunctionNames.aiExportSceneEx}' not supported(ASSIMP_BUILD_NO_EXPORT set)");
 
 			return exportFunc(scene, formatId, fileName, fileIO, (uint)preProcessing);
 		}

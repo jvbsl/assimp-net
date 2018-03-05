@@ -1,4 +1,3 @@
-﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2036
@@ -7,7 +6,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AssimpNet", "AssimpNet\Assi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AssimpNet.Sample", "AssimpNet.Sample\AssimpNet.Sample.csproj", "{67282517-89C5-4F57-AF65-D80E8B16BB95}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AssimpNet.Test", "AssimpNet.Test\AssimpNet.Test.csproj", "{72D6BF28-1217-405E-BE22-DFDFC37BC805}"
+EndProject
 Global
+	GlobalSection(SubversionScc) = preSolution
+		Svn-Managed = True
+		Manager = AnkhSVN - Subversion Support for Visual Studio
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -21,6 +26,10 @@ Global
 		{67282517-89C5-4F57-AF65-D80E8B16BB95}.Debug|Any CPU.Build.0 = Net45-Debug|Any CPU
 		{67282517-89C5-4F57-AF65-D80E8B16BB95}.Release|Any CPU.ActiveCfg = Net45-Release|Any CPU
 		{67282517-89C5-4F57-AF65-D80E8B16BB95}.Release|Any CPU.Build.0 = Net45-Release|Any CPU
+		{72D6BF28-1217-405E-BE22-DFDFC37BC805}.Debug|Any CPU.ActiveCfg = Net20-Release|Any CPU
+		{72D6BF28-1217-405E-BE22-DFDFC37BC805}.Debug|Any CPU.Build.0 = Net20-Release|Any CPU
+		{72D6BF28-1217-405E-BE22-DFDFC37BC805}.Release|Any CPU.ActiveCfg = Net20-Release|Any CPU
+		{72D6BF28-1217-405E-BE22-DFDFC37BC805}.Release|Any CPU.Build.0 = Net20-Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

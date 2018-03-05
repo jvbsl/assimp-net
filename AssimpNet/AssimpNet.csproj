@@ -9,7 +9,7 @@
     <NeutralLanguage>en-US</NeutralLanguage>
     <PackageId>AssimpNet-netstandard</PackageId>
     <PackageTags>assimpl;netstandard</PackageTags>
-    <PackageVersion>3.3.1</PackageVersion>
+    <PackageVersion>3.3.2</PackageVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -27,5 +27,14 @@
       <Pack>true</Pack>
     </Content>
   </ItemGroup>
-
+  <ItemGroup>
+    <None Include="AssimpKey.snk" />
+  </ItemGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
 </Project>

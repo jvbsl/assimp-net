@@ -11,6 +11,9 @@ project.lock.json
 *.userosscache
 *.sln.docstates
 
+# User-specific files (MonoDevelop/Xamarin Studio)
+*.userprefs
+
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/
@@ -42,6 +45,10 @@ TestResult.xml
 [Dd]ebugPS/
 [Rr]eleasePS/
 dlldata.c
+
+# DNX
+project.lock.json
+artifacts/
 
 *_i.c
 *_p.c
@@ -75,14 +82,17 @@ _Chutzpah*
 ipch/
 *.aps
 *.ncb
+*.opendb
 *.opensdf
 *.sdf
 *.cachefile
+*.VC.db
 
 # Visual Studio profiler
 *.psess
 *.vsp
 *.vspx
+*.sap
 
 # TFS 2012 Local Workspace
 $tf/
@@ -95,7 +105,7 @@ _ReSharper*/
 *.[Rr]e[Ss]harper
 *.DotSettings.user
 
-# JustCode is a .NET coding addin-in
+# JustCode is a .NET coding add-in
 .JustCode
 
 # TeamCity is a build add-in
@@ -107,6 +117,7 @@ _TeamCity*
 # NCrunch
 _NCrunch_*
 .*crunch*.local.xml
+nCrunchTemp_*
 
 # MightyMoose
 *.mm.*
